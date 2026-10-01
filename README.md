@@ -23,7 +23,7 @@ Coral reefs are dying from rising ocean temperatures. Scientists need to know wh
 
 ## Try It Live
 
-👉 [coral-heat-scanner.streamlit.app](https://coral-heat-scanner.streamlit.app)
+👉 👉 [coral-heat-scanner.streamlit.app](https://coral-heat-scanner.streamlit.app/)
 
 ## How It Works
 

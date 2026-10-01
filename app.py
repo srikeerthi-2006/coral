@@ -11,7 +11,7 @@ st.write("Upload a coral protein file (.fasta.gz) to scan for heat tolerance gen
 
 heat_patterns = {
     "HSP70":   ["IDLGTTYS", "DLGTTYS"],
-    "HSP90":   ["YPIWSAG", "PIWSAG"],
+    "HSP90":   ["NKEIFLRE"],
     "HSP20":   ["LFDPFSL", "DPFSLD"],
     "SOD":     ["DVWEHAYY", "WEHAYY"],
     "Catalase":["FDRERIPERVVHAK", "RERIPERVVHAK"],

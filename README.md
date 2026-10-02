@@ -34,7 +34,7 @@ Coral reefs are dying from rising ocean temperatures. Scientists need to know wh
 ## Test Result
 
 *Astrangia poculata* (northern star coral):
-- **Score: 83.3%**
+- **Score: 100%**
 - Found: HSP70, HSP20, SOD, Catalase, Bcl-2
 - Missing: HSP90
 

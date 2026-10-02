@@ -1,4 +1,4 @@
-# 🪸 Coral Heat Resilience Scanner
+# 🪸 Coral Light & Heat Resilience Scanner
 
 A tool that scans coral genomes for heat tolerance genes.
 

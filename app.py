@@ -6,7 +6,7 @@ import os
 
 st.set_page_config(page_title="Coral Heat Scanner", page_icon="🪸")
 
-st.title("🪸 Coral Heat Resilience Scanner")
+st.title("🪸 Coral Light & Heat Resilience Scanner")
 st.write("Upload a coral protein file (.fasta.gz) to scan for heat tolerance genes.")
 
 heat_patterns = {
@@ -16,6 +16,9 @@ heat_patterns = {
     "SOD":     ["DVWEHAYY", "WEHAYY"],
     "Catalase":["FDRERIPERVVHAK", "RERIPERVVHAK"],
     "Bcl-2":   ["NWGRIVA", "GRIVAF"],
+    "GFP-like":["TYG", "GYSST", "FSVSG"],
+    "CP-like": ["NTFY", "SYG"],
+    "MAA":     ["GAST", "GSST", "QGM"],
 }
 
 uploaded_file = st.file_uploader("Choose a .fasta.gz file", type=["gz"])
@@ -47,7 +50,7 @@ if uploaded_file is not None:
 
     st.success(f"Scan complete! Scanned {total_proteins:,} proteins.")
 
-    st.metric("Heat Resilience Score", f"{score:.1f}%")
+    st.metric("Combined Resilience Score", f"{score:.1f}%")
 
     st.subheader("Genes Found")
     for gene in sorted(found_genes):

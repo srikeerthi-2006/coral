@@ -64,20 +64,15 @@ def display_results(found_genes, total_proteins, all_patterns):
     st.success(f"Scan complete! Scanned {total_proteins:,} proteins.")
     st.metric("Combined Resilience Score", f"{score:.1f}%")
         # Visual chart
+        # Visual chart - grouped by category
+    heat_found = sum(1 for g in HEAT_PATTERNS if g in found_genes)
+    light_found = sum(1 for g in LIGHT_PATTERNS if g in found_genes)
+
     chart_data = {
-        "Gene": list(all_patterns.keys()),
-        "Found": [1 if g in found_genes else 0 for g in all_patterns.keys()],
+        "Category": ["Heat Tolerance", "Light Adaptation"],
+        "Genes Found": [heat_found, light_found],
     }
-    st.bar_chart(chart_data, x="Gene", y="Found")
-
-    st.subheader("Genes Found")
-    for gene in sorted(found_genes):
-        st.write(f"✅ {gene}")
-
-    st.subheader("Genes Not Found")
-    for gene in sorted(all_patterns.keys()):
-        if gene not in found_genes:
-            st.write(f"❌ {gene}")
+    st.bar_chart(chart_data, x="Category", y="Genes Found")
 
 
 # ============================================================

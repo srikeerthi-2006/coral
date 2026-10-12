@@ -63,7 +63,6 @@ def display_results(found_genes, total_proteins, all_patterns):
 
     st.success(f"Scan complete! Scanned {total_proteins:,} proteins.")
     st.metric("Combined Resilience Score", f"{score:.1f}%")
-        # Visual chart
         # Visual chart - grouped by category
     heat_found = sum(1 for g in HEAT_PATTERNS if g in found_genes)
     light_found = sum(1 for g in LIGHT_PATTERNS if g in found_genes)
@@ -82,6 +81,27 @@ def display_results(found_genes, total_proteins, all_patterns):
     for gene in sorted(all_patterns.keys()):
         if gene not in found_genes:
             st.write(f"❌ {gene}")
+
+
+    # Download button
+    result_text = f"Coral Analysis Report\n"
+    result_text += f"=====================\n"
+    result_text += f"Proteins scanned: {total_proteins:,}\n"
+    result_text += f"Score: {score:.1f}%\n\n"
+    result_text += f"Genes Found:\n"
+    for gene in sorted(found_genes):
+        result_text += f"  + {gene}\n"
+    result_text += f"\nGenes Not Found:\n"
+    for gene in sorted(all_patterns.keys()):
+        if gene not in found_genes:
+            result_text += f"  - {gene}\n"
+
+    st.download_button(
+        label="📥 Download Report",
+        data=result_text,
+        file_name="coral_report.txt",
+        mime="text/plain",
+    )
 # ============================================================
 # MAIN APP
 # ============================================================

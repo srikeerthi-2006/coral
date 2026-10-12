@@ -96,3 +96,23 @@ if uploaded_file is not None:
         os.unlink(tmp_path)
 
     display_results(found_genes, total_proteins, ALL_PATTERNS)
+
+    # Download button
+    result_text = f"Coral Analysis Report\n"
+    result_text += f"=====================\n"
+    result_text += f"Proteins scanned: {total_proteins:,}\n"
+    result_text += f"Score: {score:.1f}%\n\n"
+    result_text += f"Genes Found:\n"
+    for gene in sorted(found_genes):
+        result_text += f"  + {gene}\n"
+    result_text += f"\nGenes Not Found:\n"
+    for gene in sorted(all_patterns.keys()):
+        if gene not in found_genes:
+            result_text += f"  - {gene}\n"
+
+    st.download_button(
+        label="📥 Download Report",
+        data=result_text,
+        file_name="coral_report.txt",
+        mime="text/plain",
+    )

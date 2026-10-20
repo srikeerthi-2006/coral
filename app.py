@@ -23,8 +23,15 @@ LIGHT_PATTERNS = {
     "CP-like":  ["NTFY", "SYG"],
     "MAA":      ["GAST", "GSST", "QGM"],
 }
+UV_PATTERNS = {
+    "DHQ-synthase": ["GLLGIG", "TIVIPDG"],
+}
 
-ALL_PATTERNS = {**HEAT_PATTERNS, **LIGHT_PATTERNS}
+IMMUNE_PATTERNS = {
+    "Peroxidasin": ["YPDFS", "ADFYE"],
+    "Galectin": ["HFNPRF", "VCNTR"],
+}
+ALL_PATTERNS = {**HEAT_PATTERNS, **LIGHT_PATTERNS, **UV_PATTERNS, **IMMUNE_PATTERNS}
 
 
 # ============================================================
@@ -63,13 +70,15 @@ def display_results(found_genes, total_proteins, all_patterns):
 
     st.success(f"Scan complete! Scanned {total_proteins:,} proteins.")
     st.metric("Combined Resilience Score", f"{score:.1f}%")
-        # Visual chart - grouped by category
+       # Visual chart - grouped by category
     heat_found = sum(1 for g in HEAT_PATTERNS if g in found_genes)
     light_found = sum(1 for g in LIGHT_PATTERNS if g in found_genes)
+    uv_found = sum(1 for g in UV_PATTERNS if g in found_genes)
+    immune_found = sum(1 for g in IMMUNE_PATTERNS if g in found_genes)
 
     chart_data = {
-        "Category": ["Heat Tolerance", "Light Adaptation"],
-        "Genes Found": [heat_found, light_found],
+        "Category": ["Heat Tolerance", "Light Adaptation", "UV Protection", "Immune Defense"],
+        "Genes Found": [heat_found, light_found, uv_found, immune_found],
     }
     st.bar_chart(chart_data, x="Category", y="Genes Found")
 
@@ -108,7 +117,7 @@ def display_results(found_genes, total_proteins, all_patterns):
 
 st.set_page_config(page_title="Coral Light & Heat Scanner", page_icon="🪸")
 
-st.title("🪸 Coral Light & Heat Resilience Scanner")
+st.title("🪸Coral Resilience Multi-Scanner")
 st.write("Upload a coral protein file (.fasta.gz) to scan for heat and light adaptation genes.")
 
 

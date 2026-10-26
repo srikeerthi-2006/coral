@@ -24,12 +24,11 @@ LIGHT_PATTERNS = {
     "MAA":      ["GAST", "GSST", "QGM"],
 }
 UV_PATTERNS = {
-    "DHQ-synthase": ["GLLGIG", "TIVIPDG"],
+    "DHQ-synthase": ["TIVIPDGEKSKTLETLERIYDALLEAGL"],
 }
 
 IMMUNE_PATTERNS = {
-    "Peroxidasin": ["YPDFS", "ADFYE"],
-    "Galectin": ["HFNPRF", "VCNTR"],
+    "Galectin": ["HFNPRF"],
 }
 ALL_PATTERNS = {**HEAT_PATTERNS, **LIGHT_PATTERNS, **UV_PATTERNS, **IMMUNE_PATTERNS}
 

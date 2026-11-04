@@ -37,12 +37,30 @@ ALL_PATTERNS = {**HEAT_PATTERNS, **LIGHT_PATTERNS, **UV_PATTERNS, **IMMUNE_PATTE
 # CORE LOGIC
 # ============================================================
 
+def get_similarity(seq, pattern):
+    """Finds the highest similarity percentage of a pattern within a sequence."""
+    best_score = 0
+    p_len = len(pattern)
+    
+    # Slide a window the size of the pattern across the protein
+    for i in range(len(seq) - p_len + 1):
+        window = seq[i:i+p_len]
+        
+        # Count how many letters match exactly
+        matches = sum(1 for a, b in zip(window, pattern) if a == b)
+        score = (matches / p_len) * 100
+        
+        if score > best_score:
+            best_score = score
+            
+    return best_score
+
+
 def scan_genome(file_path, patterns):
     """
-    Scan a coral genome file for gene patterns.
-    Returns (found_genes, total_proteins).
+    Scan a coral genome and return similarities.
     """
-    found_genes = set()
+    results = {}
     total_proteins = 0
 
     with gzip.open(file_path, "rt") as handle:
@@ -51,12 +69,16 @@ def scan_genome(file_path, patterns):
             seq = str(protein.seq)
 
             for gene, motifs in patterns.items():
-                if gene in found_genes:
-                    continue
-                if any(motif in seq for motif in motifs):
-                    found_genes.add(gene)
+                if gene not in results:
+                    results[gene] = 0.0 # Start at 0% similarity
+                
+                # Check similarity for all motifs of this gene
+                for motif in motifs:
+                    score = get_similarity(seq, motif)
+                    if score > results[gene]:
+                        results[gene] = score
 
-    return found_genes, total_proteins
+    return results, total_proteins
 
 
 # ============================================================

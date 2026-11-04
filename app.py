@@ -85,32 +85,40 @@ def scan_genome(file_path, patterns):
 # DISPLAY
 # ============================================================
 
-def display_results(found_genes, total_proteins, all_patterns):
-    """Show scan results on the page."""
+def display_results(results, total_proteins, all_patterns):
+    """Show scan results with similarity percentages."""
+    
+    # A gene counts as "Found" if similarity is above 80%
+    found_genes = [g for g, score in results.items() if score >= 80.0]
     score = len(found_genes) / len(all_patterns) * 100
 
     st.success(f"Scan complete! Scanned {total_proteins:,} proteins.")
     st.metric("Combined Resilience Score", f"{score:.1f}%")
-       # Visual chart - grouped by category
+
+    # Visual chart - grouped by category
     heat_found = sum(1 for g in HEAT_PATTERNS if g in found_genes)
     light_found = sum(1 for g in LIGHT_PATTERNS if g in found_genes)
-    uv_found = sum(1 for g in UV_PATTERNS if g in found_genes)
-    immune_found = sum(1 for g in IMMUNE_PATTERNS if g in found_genes)
-
+    
     chart_data = {
-        "Category": ["Heat Tolerance", "Light Adaptation", "UV Protection", "Immune Defense"],
-        "Genes Found": [heat_found, light_found, uv_found, immune_found],
+        "Category": ["Heat Tolerance", "Light Adaptation"],
+        "Genes Found": [heat_found, light_found],
     }
     st.bar_chart(chart_data, x="Category", y="Genes Found")
 
-    st.subheader("Genes Found")
-    for gene in sorted(found_genes):
-        st.write(f"✅ {gene}")
-
-    st.subheader("Genes Not Found")
+    st.subheader("Similarity Analysis")
+    st.write("Percentage indicates how closely the coral's proteins match known survival genes.")
+    
+    # Show progress bars for every gene
     for gene in sorted(all_patterns.keys()):
-        if gene not in found_genes:
-            st.write(f"❌ {gene}")
+        sim = results.get(gene, 0.0)
+        
+        # Color code: Green if >80%, Yellow if >50%, Red if low
+        if sim >= 80.0:
+            st.write(f"✅ **{gene}**: {sim:.1f}% similarity")
+        elif sim >= 50.0:
+            st.write(f"⚠️ **{gene}**: {sim:.1f}% similarity")
+        else:
+            st.write(f"❌ **{gene}**: {sim:.1f}% similarity")
 
 
     # Download button
@@ -150,9 +158,8 @@ if uploaded_file is not None:
             tmp.write(uploaded_file.read())
             tmp_path = tmp.name
 
-        found_genes, total_proteins = scan_genome(tmp_path, ALL_PATTERNS)
+        results, total_proteins = scan_genome(tmp_path, ALL_PATTERNS)
         os.unlink(tmp_path)
 
-    display_results(found_genes, total_proteins, ALL_PATTERNS)
-
+    display_results(results, total_proteins, ALL_PATTERNS)
 

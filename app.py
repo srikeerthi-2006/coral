@@ -23,6 +23,9 @@ LIGHT_PATTERNS = {
     "CP-like":  ["NTFY", "SYG"],
     "MAA":      ["GAST", "GSST", "QGM"],
 }
+DISEASE_PATTERNS = {
+    "Galectin": ["HFNPRF"],
+}
 UV_PATTERNS = {
     "DHQ-synthase": ["TIVIPDGEKSKTLETLERIYDALLEAGL"],
 }
@@ -30,7 +33,7 @@ UV_PATTERNS = {
 IMMUNE_PATTERNS = {
     "Galectin": ["HFNPRF"],
 }
-ALL_PATTERNS = {**HEAT_PATTERNS, **LIGHT_PATTERNS, **UV_PATTERNS, **IMMUNE_PATTERNS}
+ALL_PATTERNS = {**HEAT_PATTERNS, **LIGHT_PATTERNS, **DISEASE_PATTERNS}
 
 
 # ============================================================
@@ -96,12 +99,14 @@ def display_results(results, total_proteins, all_patterns):
     st.metric("Combined Resilience Score", f"{score:.1f}%")
 
     # Visual chart - grouped by category
+       # Visual chart
     heat_found = sum(1 for g in HEAT_PATTERNS if g in found_genes)
     light_found = sum(1 for g in LIGHT_PATTERNS if g in found_genes)
+    disease_found = sum(1 for g in DISEASE_PATTERNS if g in found_genes)
     
     chart_data = {
-        "Category": ["Heat Tolerance", "Light Adaptation"],
-        "Genes Found": [heat_found, light_found],
+        "Category": ["Heat Tolerance", "Light Adaptation", "Disease Resistance"],
+        "Genes Found": [heat_found, light_found, disease_found],
     }
     st.bar_chart(chart_data, x="Category", y="Genes Found")
 
